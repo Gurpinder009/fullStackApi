@@ -1,6 +1,5 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import verifyJsonToken from "../utilities/verifyToken.js";
 
 export const adminRouter = express.Router();
 
@@ -22,8 +21,4 @@ adminRouter.post("/login", (req, res) => {
   } else {
     res.status(401).json({ error: "invalid user name" });
   }
-});
-
-adminRouter.get("/", verifyJsonToken, (req, res) => {
-  res.status(200).json("this is working fine");
 });

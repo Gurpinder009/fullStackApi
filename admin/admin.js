@@ -1,19 +1,8 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import verifyJsonToken from "../utilities/verifyToken.js";
 
 export const adminRouter = express.Router();
-
-function verifyJsonToken(req, res, next) {
-  let rawToken = req.headers.authorization;
-  let token = rawToken.split(" ")[1];
-  try {
-    if (jwt.verify(token, process.env.SECRET_KEY)) {
-      next();
-    }
-  } catch (ex) {
-    res.status(401).json({ error: "bad request" });
-  }
-}
 
 adminRouter.post("/login", (req, res) => {
   let { userName, password } = req.body;
@@ -35,12 +24,6 @@ adminRouter.post("/login", (req, res) => {
   }
 });
 
-adminRouter.get(
-  "/",
-
-  verifyJsonToken,
-
-  (req, res) => {
-    res.status(200).json("this is working fine");
-  }
-);
+adminRouter.get("/", verifyJsonToken, (req, res) => {
+  res.status(200).json("this is working fine");
+});
